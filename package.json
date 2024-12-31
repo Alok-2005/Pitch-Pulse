@@ -1,5 +1,5 @@
 {
-  "name": "yc_directory",
+  "name": "pitch-pulse",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -49,6 +49,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "15.0.0-canary.183",
     "postcss": "^8",
