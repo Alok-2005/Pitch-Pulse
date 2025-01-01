@@ -18,14 +18,26 @@ const md = markdownit();
 
 export const experimental_ppr = true;
 
-const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const id = (await params).id;
+const Page = async ({ params }: { params: { id: string } }) => {
+  const { id } = params;
 
-  const [post] = await Promise.all([
-    client.fetch(STARTUP_BY_ID_QUERY, { id }),
-   
-  ]);
-const {select:editorPosts}=await client.fetch(PLAYLIST_BY_SLUG_QUERY,{slug:"editor-picks"})
+  let post = null;
+  let editorPosts = [];
+
+  try {
+    [post] = await Promise.all([
+      client.fetch(STARTUP_BY_ID_QUERY, { id }),
+    ]);
+
+    const { select } = await client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+      slug: "editor-picks",
+    });
+    editorPosts = select || [];
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return notFound();
+  }
+
   if (!post) return notFound();
 
   const parsedContent = md.render(post?.pitch || "");
@@ -41,7 +53,7 @@ const {select:editorPosts}=await client.fetch(PLAYLIST_BY_SLUG_QUERY,{slug:"edit
 
       <section className="section_container">
         <img
-          src={post.image}
+          src={post.image || "/default-thumbnail.jpg"}
           alt="thumbnail"
           className="w-full h-auto rounded-xl"
         />
@@ -53,7 +65,7 @@ const {select:editorPosts}=await client.fetch(PLAYLIST_BY_SLUG_QUERY,{slug:"edit
               className="flex gap-2 items-center mb-3"
             >
               <Image
-                src={post.author?.image}
+                src={post.author?.image || "/default-avatar.jpg"}
                 alt="avatar"
                 width={64}
                 height={64}
