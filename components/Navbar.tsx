@@ -32,7 +32,7 @@ const Navbar = async () => {
                 className="hover:text-white transition-all duration-300 flex items-center gap-2 font-medium relative group"
               >
                 <span className="max-sm:hidden relative">
-                  Create
+                  Create    
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
                 </span>
                 <BadgePlus className="size-5 sm:hidden hover:text-white animate-pulse" />
